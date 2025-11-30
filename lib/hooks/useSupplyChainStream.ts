@@ -93,15 +93,15 @@ export function useSupplyChainStream() {
         // Load routes for all trucks
         for (const routeConfig of ROUTES) {
           try {
-            const route = await fetchRoute(routeConfig.start, routeConfig.end);
+            const routeData = await fetchRoute(routeConfig.start, routeConfig.end);
             
-            if (route && route.length > 0) {
+            if (routeData && routeData.coordinates && routeData.coordinates.length > 0) {
               const truck = createTruck(
                 routeConfig.id,
                 routeConfig.driver,
                 routeConfig.cargoValue,
                 routeConfig.velocity,
-                route
+                routeData.coordinates
               );
               loadedTrucks.push(truck);
               
@@ -109,7 +109,7 @@ export function useSupplyChainStream() {
                 id: `evt-route-${routeConfig.id}-${Date.now()}`,
                 timestamp: new Date(),
                 type: 'system',
-                message: ` ${routeConfig.id} route loaded (${route.length} waypoints)`,
+                message: ` ${routeConfig.id} route loaded (${routeData.coordinates.length} waypoints)`,
                 severity: 'info'
               }, ...prev]);
             } else {

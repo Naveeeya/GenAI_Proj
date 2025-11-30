@@ -70,8 +70,7 @@ function CenterButton({ trucks }: { trucks: Truck[] }) {
         `;
         
         L.DomEvent.disableClickPropagation(button);
-        L.DomEvent.preventDefault(button);
-        L.DomEvent.on(button, 'click', function(e) {
+        L.DomEvent.on(button, 'click', function(e: Event) {
           e.preventDefault();
           
           if (trucks.length === 0) {
