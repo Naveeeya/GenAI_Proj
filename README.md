@@ -1,672 +1,200 @@
-# 🚀 ChainReaction - Autonomous Supply Chain Financial Agent
+# ChainReaction 🚀
 
-> **Real-time supply chain visibility with AI-powered financial arbitrage detection**
+**Autonomous Supply Chain Financial Agent**
 
-ChainReaction is an enterprise SaaS platform that automatically detects logistics delays, calculates penalty costs, and
-proposes cost-saving solutions in real-time. Save millions by automating supply chain financial decisions.
+Enterprise SaaS platform that detects delays, calculates penalties, and proposes financial arbitrage solutions in
+real-time using **real road routing** and **dark mode optimized maps**.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Next.js](https://img.shields.io/badge/Next.js-16.0.5-black)
-![Python](https://img.shields.io/badge/Python-3.11+-green)
-![License](https://img.shields.io/badge/license-MIT-green)
+## Quick Start
 
----
+```bash
+npm install
+npm run dev
+```
 
-## 📋 Table of Contents
+Open [http://localhost:3000](http://localhost:3000)
 
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [Environment Setup](#-environment-setup)
-- [Running the Application](#-running-the-application)
-- [Backend WebSocket Server](#-backend-websocket-server)
-- [Authentication](#-authentication)
-- [Pages & Routes](#-pages--routes)
-- [Key Components](#-key-components)
-- [API Reference](#-api-reference)
-- [Deployment](#-deployment)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
+## Pages
 
----
+- **`/`** - Landing page with features and 24h auto-updating metrics
+- **`/dashboard`** - Live map with trucks, real-time events, and arbitrage alerts
 
-## ✨ Features
+## Tech Stack
+
+- **Next.js 14** (App Router with dynamic imports)
+- **Tailwind CSS 4** (Dark mode optimized)
+- **Framer Motion 12** (Smooth animations + confetti)
+- **React-Leaflet 5.0** + OpenStreetMap (Inverted dark tiles)
+- **OSRM API** - Real road routing (No API key required!)
+- **Lucide Icons** + **canvas-confetti**
+- **TypeScript 5** (Fully typed)
+
+## Features
 
 ### Core Functionality
 
-- **🗺️ Real-Time Tracking** - Track trucks and shipments with sub-second precision
-- **💰 Financial Arbitrage** - Automatically detect cost-saving opportunities
-- **📊 Analytics Dashboard** - Comprehensive insights with interactive charts
-- **📦 Customer Tracking** - Public order tracking without authentication
-- **🤖 AI-Powered** - OpenAI integration for contract analysis (optional)
-- **⚡ WebSocket Updates** - Live data streaming from Python backend
-- **🔒 Secure Auth** - NextAuth.js with protected routes
+✨ **Real-time supply chain visibility** - Track 3 trucks across India  
+💰 **Financial arbitrage detection** - $1,700 savings opportunity  
+🗺️ **Live map with OSRM routing** - Real road routes, not straight lines  
+🤖 **Autonomous agent actions** - 12-second scripted demo scenario
 
-### Business Impact
+### Map Features
 
-- 67% reduction in penalty costs
-- $1,700+ average savings per incident
-- 24/7 autonomous operation
-- Real-time decision making
-- Carbon credit tracking
+🌙 **Dark mode map tiles** - Inverted OSM tiles with hue-rotate for cohesive dark theme  
+🎯 **Centering button** - Integrated control to recenter map on all trucks  
+📍 **Smart zoom bounds** - Prevents excessive zoom-out and multiple world copies  
+🚛 **4 truck statuses** - On-time (🟢), Delayed (🟡), Critical (🔴), Resolved (💜)  
+🗺️ **Auto-zoom/center** - Dynamically fits all trucks and routes in view
 
----
+### UI/UX Features
 
-## 🛠️ Tech Stack
+🎊 **Confetti animation** - 2-second celebration on arbitrage execution  
+📊 **Side-by-side layout** - Map and Agent Stream embedded (not floating)  
+🔄 **Rounded edges** - Professional glassmorphism throughout  
+⚡ **Smooth animations** - Spring physics on all transitions  
+🌿 **Carbon credit tracking** - Eco-route toggle with dashed lines
 
-### Frontend
+## Architecture
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4
-- **Animations:** Framer Motion
-- **Charts:** Recharts
-- **Authentication:** NextAuth.js
-- **Icons:** Lucide React
-- **State Management:** React Hooks
-
-### Backend
-
-- **Language:** Python 3.11+
-- **WebSocket:** websockets library
-- **AI:** OpenAI GPT-4 (optional)
-- **Environment:** python-dotenv
-
-### Infrastructure
-
-- **Deployment:** Vercel (Frontend), Railway/Render (Backend)
-- **Maps:** OpenStreetMap + OSRM API
-- **Database:** In-memory (demo) - expandable to PostgreSQL/MongoDB
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 18+ and npm
-- Python 3.11+
-- Git
-
-### Installation
-
-```bash
-# 1. Clone the repository
-git clone <your-repo-url>
-cd chainreaction
-
-# 2. Install frontend dependencies
-npm install
-
-# 3. Install backend dependencies
-cd backend
-pip install -r requirements.txt
-cd ..
-
-# 4. Set up environment variables
-cp .env.local.example .env.local
-# Edit .env.local with your configuration
-
-# 5. (Optional) Set up backend environment
-cp backend/.env.example backend/.env
-# Add your OpenAI API key if using AI features
-```
-
-### Running the App
-
-```bash
-# Terminal 1: Start Frontend
-npm run dev
-
-# Terminal 2: Start Backend (Optional - for WebSocket features)
-cd backend
-python server.py
-```
-
-**Access the application:**
-
-- Frontend: http://localhost:3000
-- Backend WebSocket: ws://localhost:8080
-
----
-
-## 📁 Project Structure
+### Real-Time Simulation (12 seconds)
 
 ```
-chainreaction/
-├── app/                          # Next.js app directory
-│   ├── page.tsx                  # Landing page
-│   ├── login/                    # Login page
-│   ├── dashboard/                # Main dashboard (protected)
-│   ├── analytics/                # Analytics dashboard (protected)
-│   ├── track/[id]/               # Customer tracking (public)
-│   └── api/auth/                 # NextAuth API routes
+T+0s:  🚀 Agent initialized, 3 trucks loaded with OSRM routes
+T+2s:  📡 GPS sensors operational
+T+5s:  🟡 TRK-402 velocity drops to 0 km/h (Delayed)
+T+8s:  🔴 TRK-402 status → CRITICAL (SLA threshold exceeded)
+T+12s: 💎 Arbitrage modal appears ($1,700 net savings!)
+       User clicks "Execute Fix" → 🎉 Confetti → 💜 Resolved
+```
+
+### OSRM Integration
+
+**3 Real Routes Fetched:**
+
+- **TRK-402**: Pune (73.86, 18.52) → Mumbai (72.88, 19.08) | Driver: Priya Sharma
+- **TRK-301**: Bangalore (77.59, 12.97) → Delhi (77.21, 28.61) | Driver: Rajesh Kumar
+- **TRK-205**: Mumbai (72.88, 19.08) → Kolkata (88.36, 22.57) | Driver: Anita Desai
+
+Routes load asynchronously on mount with **automatic fallback** if OSRM is unavailable.
+
+### Dark Mode Map Implementation
+
+```css
+/* Tiles inverted for dark theme */
+.leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Markers counter-inverted to keep original colors */
+.leaflet-marker-pane {
+  filter: invert(100%) hue-rotate(180deg);
+}
+```
+
+Result: Dark navy map with colorful truck markers (🟢🟡🔴💜)
+
+### Component Structure
+
+```
+app/
+├── page.tsx                    # Landing page (glassmorphism cards)
+├── dashboard/page.tsx          # Main dashboard (side-by-side layout)
 │
-├── components/                   # Reusable React components
-│   ├── SessionProvider.tsx       # Auth wrapper
-│   ├── SupplyChainMap.tsx        # Map component (placeholder)
-│   ├── dashboard/                # Dashboard-specific components
-│   │   ├── AgentOverlay.tsx      # Event stream panel
-│   │   ├── FinancialModal.tsx    # Arbitrage modal
-│   │   └── UserMenu.tsx          # User menu with logout
-│   └── landing/                  # Landing page components
-│       └── FeatureCards.tsx      # Auto-updating feature cards
+components/
+├── SupplyChainMap.tsx          # Leaflet map (dark mode, OSRM routes, centering button)
+├── landing/FeatureCards.tsx    # Auto-updating 24h metrics
+├── dashboard/
+│   ├── AgentOverlay.tsx        # Right sidebar (permanently visible)
+│   └── FinancialModal.tsx      # Arbitrage card (with confetti)
 │
-├── lib/                          # Utilities and configurations
-│   ├── auth.ts                   # NextAuth configuration
-│   ├── hooks/                    # Custom React hooks
-│   │   ├── useSupplyChainStream.ts  # Local simulation
-│   │   └── useWebSocket.ts       # WebSocket client
-│   ├── types/                    # TypeScript definitions
-│   └── utils/                    # Utility functions
-│       └── routing.ts            # OSRM routing utilities
-│
-├── backend/                      # Python WebSocket server
-│   ├── server.py                 # WebSocket server
-│   ├── simulation.py             # Truck simulation engine
-│   ├── contract_analyzer.py      # AI contract analysis
-│   ├── requirements.txt          # Python dependencies
-│   └── data/                     # Sample data
-│       └── sample_contract.json  # Contract example
-│
-├── middleware.ts                 # Route protection middleware
-├── .env.local                    # Frontend environment variables
-└── package.json                  # Node.js dependencies
+lib/
+├── hooks/useSupplyChainStream.ts  # Simulation engine + OSRM integration
+├── utils/routing.ts               # OSRM API wrapper
+└── types/index.ts                 # TypeScript definitions (4 truck statuses)
 ```
 
----
+## Map Controls
 
-## 🔐 Environment Setup
+### Zoom Bounds
 
-### Frontend Configuration
+- **Min Zoom**: 3 (prevents excessive zoom-out)
+- **Max Zoom**: 18 (street-level detail)
+- **Max Bounds**: [-85, -180] to [85, 180] (world coordinates)
+- **Viscosity**: 1.0 (rigid boundaries)
+- **No Wrap**: Single world copy, no horizontal repetition
 
-Create `.env.local` in the root directory:
+### Centering Button (⊕)
 
-```env
-# NextAuth Configuration
-NEXTAUTH_SECRET=your-secret-key-here-generate-with-openssl-rand-base64-32
-NEXTAUTH_URL=http://localhost:3000
+- Integrated below zoom controls (+/-)
+- Recenters map to fit all trucks and routes
+- 0.5s smooth animation
+- Falls back to India center if no trucks
 
-# WebSocket Backend URL (if using Python backend)
-NEXT_PUBLIC_WS_URL=ws://localhost:8080
+## Status Lifecycle
+
+```
+🟢 ON-TIME   → Normal operations, 65+ km/h
+🟡 DELAYED   → Velocity drops, minor issue
+🔴 CRITICAL  → SLA breach, penalty incoming
+💜 RESOLVED  → Solution executed, relief dispatched
 ```
 
-### Backend Configuration (Optional)
+## Confetti Effect
 
-Create `backend/.env`:
+Triggered on "Execute 1-Click Fix":
 
-```env
-# OpenAI API Key (optional - system works without it)
-OPENAI_API_KEY=sk-proj-your-key-here
+- **Duration**: 2 seconds
+- **Particles**: 50 per burst (decreasing)
+- **Launch**: Two sides (left + right)
+- **Z-index**: 10002 (above modal)
 
-# WebSocket Server Configuration
-WS_HOST=localhost
-WS_PORT=8080
-DEBUG=True
-```
+## Performance
 
----
+- **Route caching**: OSRM responses stored in state
+- **Rate limiting**: 300ms delay between truck route requests
+- **Lazy loading**: Map loaded with `dynamic(() => import(), { ssr: false })`
+- **GPU acceleration**: `will-change: transform` on tiles
 
-## 🎮 Running the Application
+## No API Keys Required
 
-### Development Mode
+- **OpenStreetMap**: Free tile service
+- **OSRM**: Public routing API (router.project-osrm.org)
+- **No auth**: Fully functional demo without credentials
 
-**Option 1: Frontend Only (Local Simulation)**
+## Deployment
 
 ```bash
-npm run dev
-```
-
-- Uses built-in truck simulation
-- No backend required
-- Perfect for UI development
-
-**Option 2: Full Stack (With WebSocket Backend)**
-
-```bash
-# Terminal 1: Frontend
-npm run dev
-
-# Terminal 2: Backend
-cd backend
-python server.py
-```
-
-- Real-time WebSocket updates
-- AI contract analysis (if API key provided)
-- Full arbitrage detection
-
-### Production Build
-
-```bash
-# Build frontend
+# Production build
 npm run build
 npm start
 
-# Backend runs same command
-cd backend
-python server.py
+# Vercel (recommended)
+vercel deploy
+
+# Docker
+docker build -t chainreaction .
+docker run -p 3000:3000 chainreaction
 ```
 
----
+## Browser Support
 
-## 🐍 Backend WebSocket Server
+✅ Chrome/Edge (Recommended)  
+✅ Firefox  
+✅ Safari  
+⚠️ Mobile (Works but optimized for desktop)
 
-### Features
+## Demo Flow
 
-- Real-time truck position updates (1s interval)
-- 3 simulated trucks with realistic routes
-- Automatic delay detection
-- Arbitrage opportunity calculation
-- Contract penalty analysis
-
-### WebSocket Events
-
-**Server → Client:**
-
-- `initial_state` - Sent on connection
-- `state_update` - Every 1 second
-- `arbitrage_opportunity` - When savings detected
-- `arbitrage_executed` - Confirmation
-
-**Client → Server:**
-
-- `execute_arbitrage` - Execute cost-saving action
-- `request_contract` - Get contract details
-- `ping` - Keep connection alive
-
-### Demo Scenario Timeline
-
-| Time | Event | Description |
-|------|-------|-------------|
-| T+0s | Start | System initializes |
-| T+2s | Normal | All trucks moving |
-| T+5s | Delay | TRK-402 stops (velocity → 0) |
-| T+8s | Critical | Status escalated |
-| T+12s | Arbitrage | 💎 $1,700 savings opportunity! |
+1. Visit `/dashboard`
+2. Watch 3 trucks load with real OSRM routes (~2 seconds)
+3. Observe TRK-402 progress: Green → Yellow → Red (12 seconds)
+4. Modal appears with $1,700 savings opportunity
+5. Click "Execute Fix" → Confetti explosion 🎉
+6. Truck turns purple, problem resolved!
 
 ---
 
-## 🔒 Authentication
+**Built for hackathons. Production-ready architecture. No API keys required.** 🚀
 
-### Demo Credentials
+**Contributors**: Built with ❤️ using Next.js 14, TypeScript, and OpenStreetMap
 
-**User Account:**
-
-- Email: `demo@chainreaction.com`
-- Password: `demo123`
-
-**Admin Account:**
-
-- Email: `admin@chainreaction.com`
-- Password: `admin123`
-
-### Protected Routes
-
-✅ **Requires Authentication:**
-
-- `/dashboard` - Main dashboard
-- `/analytics` - Analytics & insights
-
-🌐 **Public Access:**
-
-- `/` - Landing page
-- `/login` - Login page
-- `/track/[id]` - Customer order tracking
-
-### Security Features
-
-- JWT-based sessions (30-day expiry)
-- Automatic route protection
-- Secure password handling
-- Session persistence
-
-**Note:** Current implementation uses in-memory storage. For production, integrate a database (PostgreSQL/MongoDB) and
-hash passwords.
-
----
-
-## 📄 Pages & Routes
-
-### 1. Landing Page (`/`)
-
-**Features:**
-
-- Hero section with animated gradients
-- Customer order tracking input
-- Auto-updating feature cards (24h refresh)
-- Social proof section
-- CTA buttons
-
-### 2. Login Page (`/login`)
-
-**Features:**
-
-- Email/password authentication
-- Error handling with visual feedback
-- Demo credentials displayed
-- Responsive design
-
-### 3. Dashboard (`/dashboard`)
-
-**Features:**
-
-- Map placeholder (to be integrated by team)
-- Real-time statistics (Active trucks, Cargo value, On-time rate, Savings)
-- Agent overlay panel (collapsible event stream)
-- Arbitrage modal (appears at T+12s in demo)
-- Eco-route toggle
-- User menu with logout
-
-### 4. Analytics (`/analytics`)
-
-**Features:**
-
-- **Metrics Overview:** 4 cards with key KPIs
-- **Savings Chart:** Area chart showing cost savings vs penalties
-- **Fleet Distribution:** Pie chart of truck statuses
-- **Arbitrage Table:** Recent cost-saving opportunities
-- **Performance Stats:** Routes, metrics, carbon impact
-- Export functionality (placeholder)
-
-### 5. Customer Tracking (`/track/[id]`)
-
-**Features:**
-
-- Public-facing (no login required)
-- Clean, light-themed design
-- Order details and timeline
-- Map placeholder
-- Driver information
-- ETA countdown
-- Support contact button
-
-**Example URLs:**
-
-- `/track/ORD-402`
-- `/track/ORD-305`
-- `/track/ORD-518`
-
----
-
-## 🧩 Key Components
-
-### Frontend Components
-
-**SupplyChainMap** (`components/SupplyChainMap.tsx`)
-
-- Interactive map component (currently placeholder)
-- Ready for integration by your team
-- Props: `trucks[]`, `ecoMode`
-
-**AgentOverlay** (`components/dashboard/AgentOverlay.tsx`)
-
-- Floating event stream panel
-- Real-time system intelligence
-- Collapsible interface
-
-**FinancialModal** (`components/dashboard/FinancialModal.tsx`)
-
-- Arbitrage opportunity display
-- Cost comparison (penalty vs solution)
-- 1-click execution
-
-**FeatureCards** (`components/landing/FeatureCards.tsx`)
-
-- Auto-updating metrics (24h cycle)
-- Animated counters
-- LocalStorage persistence
-
-### Backend Components
-
-**TruckSimulator** (`backend/simulation.py`)
-
-- 3 trucks with realistic GPS coordinates
-- Route interpolation
-- Delay simulation
-- Event logging
-
-**ContractAnalyzer** (`backend/contract_analyzer.py`)
-
-- 3 pre-loaded contracts
-- Penalty calculation engine
-- Spot market alternatives
-- OpenAI integration (optional)
-
----
-
-## 🔌 API Reference
-
-### WebSocket Connection
-
-```typescript
-const ws = new WebSocket('ws://localhost:8080');
-
-// Listen for messages
-ws.onmessage = (event) => {
-  const data = JSON.parse(event.data);
-  console.log(data.type, data.data);
-};
-
-// Send message
-ws.send(JSON.stringify({
-  type: 'execute_arbitrage',
-  truckId: 'TRK-402'
-}));
-```
-
-### OSRM Routing
-
-```typescript
-import { fetchRoute, calculateETA, formatDistance } from '@/lib/utils/routing';
-
-// Fetch route between two points
-const route = await fetchRoute(
-  [73.8567, 18.5204], // Pune [lon, lat]
-  [72.8777, 19.0760]  // Mumbai
-);
-
-// Calculate ETA
-const eta = calculateETA(route.distance, 68, 1.0);
-
-// Format for display
-const distanceText = formatDistance(route.distance); // "150.5 km"
-```
-
----
-
-## 🚀 Deployment
-
-### Frontend (Vercel)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
-
-**Environment Variables on Vercel:**
-
-- `NEXTAUTH_SECRET`
-- `NEXTAUTH_URL` (your production URL)
-- `NEXT_PUBLIC_WS_URL` (WebSocket backend URL)
-
-### Backend (Railway/Render)
-
-**Railway:**
-
-```bash
-railway up
-```
-
-**Render:**
-
-1. Connect GitHub repository
-2. Set environment variables
-3. Deploy
-
-**Environment Variables:**
-
-- `OPENAI_API_KEY`
-- `WS_HOST=0.0.0.0`
-- `WS_PORT=8080`
-
----
-
-## 🔧 Troubleshooting
-
-### Port Already in Use
-
-```bash
-# Windows
-netstat -ano | findstr :3000
-taskkill /PID <PID> /F
-
-# Mac/Linux
-lsof -ti:3000 | xargs kill -9
-```
-
-### WebSocket Connection Failed
-
-**Issue:** "Failed to connect to server"
-
-**Solutions:**
-
-1. Ensure Python backend is running: `python backend/server.py`
-2. Check `NEXT_PUBLIC_WS_URL` in `.env.local`
-3. Verify port 8080 is not blocked by firewall
-
-### Authentication Not Working
-
-**Issue:** Login fails or redirects incorrectly
-
-**Solutions:**
-
-1. Verify `NEXTAUTH_SECRET` is set in `.env.local`
-2. Restart dev server after changing `.env.local`
-3. Clear browser cookies and try again
-
-### Build Errors
-
-```bash
-# Clear cache and rebuild
-rm -rf .next
-npm run build
-```
-
-### TypeScript Errors
-
-```bash
-# Check for type errors
-npx tsc --noEmit
-```
-
----
-
-## 📊 Demo Flow
-
-**3-Minute Demo Script:**
-
-1. **Landing Page** (30s)
-    - Show hero and features
-    - Demo customer tracking input
-    - Click "Launch ChainReaction OS"
-
-2. **Login** (15s)
-    - Use `demo@chainreaction.com` / `demo123`
-    - Show authentication flow
-
-3. **Dashboard** (90s)
-    - Point out statistics
-    - Open agent panel
-    - **Wait 12 seconds** → Arbitrage modal appears!
-    - Show $1,700 savings calculation
-    - Click "Execute 1-Click Fix"
-
-4. **Analytics** (45s)
-    - Navigate to analytics
-    - Show charts and metrics
-    - Export functionality
-
----
-
-## 🎯 Future Enhancements
-
-### High Priority
-
-- [ ] Integrate actual map component (Leaflet/Mapbox)
-- [ ] Database integration (PostgreSQL)
-- [ ] Password hashing (bcrypt)
-- [ ] Email notifications
-- [ ] PDF report generation
-
-### Medium Priority
-
-- [ ] OAuth providers (Google, GitHub)
-- [ ] User registration
-- [ ] Multi-tenant support
-- [ ] Advanced analytics
-- [ ] Mobile app
-
-### Low Priority
-
-- [ ] Unit tests
-- [ ] E2E tests (Playwright)
-- [ ] PWA support
-- [ ] Dark/light theme toggle
-
----
-
-## 🤝 Contributing
-
-This project was built for a hackathon. If you'd like to contribute:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
----
-
-## 📝 License
-
-MIT License - feel free to use this project for learning or commercial purposes.
-
----
-
-## 👥 Team
-
-Built by the ChainReaction team for autonomous supply chain intelligence.
-
----
-
-## 📞 Support
-
-For issues or questions:
-
-- Open a GitHub issue
-- Check the troubleshooting section
-- Review the demo flow guide
-
----
-
-## 🎉 Acknowledgments
-
-- Next.js team for the amazing framework
-- OpenAI for AI capabilities
-- OpenStreetMap for mapping data
-- All open-source contributors
-
----
-
-**Version:** 1.0.0  
-**Last Updated:** November 30, 2025  
-**Status:** ✅ Production Ready
-
----
-
-Made with ❤️ by ChainReaction Team
