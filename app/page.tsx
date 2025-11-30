@@ -38,7 +38,7 @@ export default function LandingPage() {
               <Link href="/login">
                   <button className="btn-ghost px-4 py-2 rounded-lg text-sm">Login</button>
               </Link>
-              <Link href="/dashboard"><button className="btn-primary px-6 py-2 rounded-lg text-sm flex items-center gap-2">Book Demo<ArrowRight className="w-4 h-4" /></button></Link>
+              <Link href="/login"><button className="btn-primary px-6 py-2 rounded-lg text-sm flex items-center gap-2">Book Demo<ArrowRight className="w-4 h-4" /></button></Link>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function LandingPage() {
                 The first Autonomous Supply Chain Agent that negotiates penalties and reroutes cargo in real-time. Save millions, automatically.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/dashboard">
+                <Link href="/login">
                   <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-8 py-4 rounded-xl text-lg font-semibold glow-teal flex items-center gap-3 w-full sm:w-auto justify-center">
                     <Zap className="w-5 h-5" />Launch ChainReaction OS
                   </motion.button>
@@ -193,7 +193,7 @@ export default function LandingPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card rounded-3xl p-12 border-2 border-teal-500/20">
             <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">Ready to Automate Your Supply Chain?</h2>
             <p className="text-xl text-slate-400 mb-8">Join the future of logistics. Start saving millions today.</p>
-            <Link href="/dashboard">
+            <Link href="/login">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn-primary px-10 py-5 rounded-xl text-lg font-semibold glow-teal inline-flex items-center gap-3">
                 <Globe className="w-6 h-6" />Launch Platform<ArrowRight className="w-5 h-5" />
               </motion.button>
