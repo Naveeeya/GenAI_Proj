@@ -29,7 +29,10 @@ export default function LoginPage() {
             if (result?.error) {
                 setError(result.error);
             } else if (result?.ok) {
-                router.push('/dashboard');
+                // Get the callback URL from query params, default to dashboard
+                const urlParams = new URLSearchParams(window.location.search);
+                const callbackUrl = urlParams.get('callbackUrl') || '/dashboard';
+                router.push(callbackUrl);
                 router.refresh();
             }
         } catch {

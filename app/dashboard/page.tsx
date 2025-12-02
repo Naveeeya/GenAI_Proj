@@ -4,10 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Home, Leaf } from 'lucide-react';
+import { Zap, Home, Leaf, BarChart3 } from 'lucide-react';
 import { useSupplyChainStream } from '@/lib/hooks/useSupplyChainStream';
 import AgentOverlay from '@/components/dashboard/AgentOverlay';
 import FinancialModal from '@/components/dashboard/FinancialModal';
+import UserMenu from '@/components/dashboard/UserMenu';
 
 // Dynamic import for map component (Leaflet requires window object)
 const SupplyChainMap = dynamic(() => import('@/components/SupplyChainMap'), {
@@ -47,6 +48,10 @@ export default function DashboardPage() {
         </Link>
         <nav className="space-y-2">
           <Link href="/dashboard"><div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-teal-500/10 border border-teal-500/20 text-teal-400"><Home className="w-5 h-5" /><span className="font-medium">Dashboard</span></div></Link>
+            <Link href="/analytics">
+                <div
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-slate-300 hover:text-white transition-colors">
+                    <BarChart3 className="w-5 h-5"/><span className="font-medium">Analytics</span></div></Link>
         </nav>
         <div className="absolute bottom-6 left-6 right-6">
           <div className="glass-card p-4 rounded-lg">
@@ -73,6 +78,7 @@ export default function DashboardPage() {
                   <motion.div animate={{ x: ecoRouteEnabled ? 20 : 0 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full" />
                 </button>
               </div>
+                <UserMenu/>
             </div>
           </div>
           <div className="grid grid-cols-4 gap-4 mt-4">
