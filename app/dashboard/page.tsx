@@ -9,6 +9,7 @@ import { useSupplyChainStream } from '@/lib/hooks/useSupplyChainStream';
 import AgentOverlay from '@/components/dashboard/AgentOverlay';
 import FinancialModal from '@/components/dashboard/FinancialModal';
 import UserMenu from '@/components/dashboard/UserMenu';
+import Image from 'next/image';
 
 // Dynamic import for map component (Leaflet requires window object)
 const SupplyChainMap = dynamic(() => import('@/components/SupplyChainMap'), {
@@ -41,10 +42,15 @@ export default function DashboardPage() {
       {/* Sidebar */}
       <div className="fixed left-0 top-0 h-full w-72 glass-card border-r border-white/10 z-40 p-6">
         <Link href="/" className="flex items-center gap-2 mb-8">
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} className="p-2 rounded-lg bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border border-teal-500/30">
-            <Zap className="w-5 h-5 text-teal-400" />
-          </motion.div>
-          <span className="text-xl font-bold text-white">ChainReaction</span>
+          <div className="relative w-40 h-10">
+            <Image 
+              src="/Logo.png" 
+              alt="FleetFusion Logo" 
+              width={160} 
+              height={40}
+              className="object-contain"
+            />
+          </div>
         </Link>
         <nav className="space-y-2">
           <Link href="/dashboard"><div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-teal-500/10 border border-teal-500/20 text-teal-400"><Home className="w-5 h-5" /><span className="font-medium">Dashboard</span></div></Link>

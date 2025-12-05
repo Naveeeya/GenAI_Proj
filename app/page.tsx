@@ -3,6 +3,7 @@
 import {useState} from 'react';
 import {motion} from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {Zap, Globe, ArrowRight, Sparkles, Package, Search } from 'lucide-react';
 import FeatureCards from '@/components/landing/FeatureCards';
@@ -25,10 +26,15 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} className="p-2 rounded-lg bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border border-teal-500/30">
-                <Zap className="w-5 h-5 text-teal-400" />
-              </motion.div>
-              <span className="text-xl font-bold text-white tracking-tight">ChainReaction</span>
+              <div className="relative w-48 h-12">
+                <Image 
+                  src="/Logo.png" 
+                  alt="FleetFusion Logo" 
+                  width={192} 
+                  height={48}
+                  className="object-contain"
+                />
+              </div>
             </Link>
             <div className="hidden md:flex items-center gap-8">
               <Link href="#platform" className="text-sm text-slate-300 hover:text-white transition-colors">Platform</Link>
@@ -66,7 +72,7 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/login">
                   <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-8 py-4 rounded-xl text-lg font-semibold glow-teal flex items-center gap-3 w-full sm:w-auto justify-center">
-                    <Zap className="w-5 h-5" />Launch ChainReaction OS
+                    <Zap className="w-5 h-5" />Launch FleetFusion OS
                   </motion.button>
                 </Link>
                 <button className="btn-ghost px-8 py-4 rounded-xl text-lg font-semibold">Watch Demo</button>
@@ -82,17 +88,7 @@ export default function LandingPage() {
                 <div className="glass-card rounded-2xl p-6 border-2 border-teal-500/20">
                   <div className="aspect-video bg-slate-900/50 rounded-xl overflow-hidden relative">
                     <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-transparent" />
-                    <div className="p-6 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="h-8 w-32 bg-slate-700/50 rounded" />
-                        <div className="flex gap-2"><div className="h-8 w-8 bg-teal-500/20 rounded" /><div className="h-8 w-8 bg-orange-500/20 rounded" /></div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="h-24 bg-slate-800/50 rounded-lg" />
-                        <div className="h-24 bg-teal-500/10 rounded-lg border border-teal-500/20" />
-                      </div>
-                      <div className="h-32 bg-slate-800/30 rounded-lg" />
-                    </div>
+                    <Image src="/Homepage_demo.png" alt="Homepage demo" width={800} height={600} className="object-cover object-center" />
                   </div>
                 </div>
                 <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity }} className="absolute -top-4 -right-4 glass-card px-4 py-2 rounded-full border border-teal-500/30">
@@ -195,7 +191,7 @@ export default function LandingPage() {
             <p className="text-xl text-slate-400 mb-8">Join the future of logistics. Start saving millions today.</p>
             <Link href="/login">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn-primary px-10 py-5 rounded-xl text-lg font-semibold glow-teal inline-flex items-center gap-3">
-                <Globe className="w-6 h-6" />Launch Platform<ArrowRight className="w-5 h-5" />
+                <Globe className="w-6 h-6" />Launch FleetFusion<ArrowRight className="w-5 h-5" />
               </motion.button>
             </Link>
           </motion.div>
@@ -205,7 +201,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8 px-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="text-sm text-slate-500">© 2025 ChainReaction. All rights reserved.</div>
+          <div className="text-sm text-slate-500">© 2025 FleetFusion. All rights reserved.</div>
           <div className="flex items-center gap-6">
             <Link href="#" className="text-sm text-slate-500 hover:text-white transition-colors">Privacy</Link>
             <Link href="#" className="text-sm text-slate-500 hover:text-white transition-colors">Terms</Link>

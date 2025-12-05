@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "ChainReaction - Autonomous Supply Chain Agent",
+    title: "FleetFusion - Autonomous Supply Chain Agent",
     description: "Real-time financial intelligence for logistics operations",
+    icons: {
+        icon: "/Favicon.png",
+    },
 };
 
 export default function RootLayout({
