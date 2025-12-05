@@ -225,7 +225,7 @@ SAMPLE_CONTRACT_TEXT = """
 LOGISTICS SERVICE AGREEMENT
 
 Client: TechCorp India Pvt Ltd
-Service Provider: ChainReaction Logistics
+Service Provider: FleetFusion Logistics
 
 DELIVERY TERMS:
 - Origin: Pune, Maharashtra
