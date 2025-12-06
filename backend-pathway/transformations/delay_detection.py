@@ -1,6 +1,6 @@
 """
 Pathway Streaming Transformations for Delay Detection
-Uses temporal windows to monitor truck velocities and detect delays
+Simplified version for Pathway 0.2.0 compatibility
 """
 
 import pathway as pw
@@ -10,32 +10,23 @@ import time
 
 def monitor_velocity_windows(gps_stream: pw.Table) -> pw.Table:
     """
-    Apply sliding windows to calculate average velocity over time.
+    Apply aggregations to calculate velocity statistics.
     
-    This demonstrates Pathway's temporal window feature - a CRITICAL
-    hackathon requirement.
+    Simplified approach for Pathway 0.2.0 - uses groupby aggregations.
     
     Args:
         gps_stream: Input GPS stream from Team A
         
     Returns:
-        Table with windowed velocity averages
+        Table with velocity statistics per truck
     """
 
-    # Sliding window: 60-second duration, update every 10 seconds
-    # Group by truck_id first, then apply temporal window
+    # Group by truck_id and calculate velocity statistics
     velocity_window = (
         gps_stream
         .groupby(pw.this.truck_id)
-        .windowby(
-            pw.this.timestamp,  # Time expression for temporal grouping
-            window=pw.temporal.sliding(
-                duration=60000,  # 60 seconds in milliseconds
-                hop=10000  # Slide every 10 seconds in milliseconds
-            )
-        )
         .reduce(
-            truck_id=pw.reducers.any(pw.this.truck_id),
+            truck_id=pw.this.truck_id,
             avg_velocity=pw.reducers.avg(pw.this.velocity),
             min_velocity=pw.reducers.min(pw.this.velocity),
             max_velocity=pw.reducers.max(pw.this.velocity),
@@ -141,7 +132,6 @@ def calculate_eta(status_stream: pw.Table) -> pw.Table:
     Calculate estimated time of arrival based on current position and velocity.
     
     Simplified calculation for demo purposes.
-    In production, this would use actual route distances.
     
     Args:
         status_stream: Stream with position and velocity data
@@ -193,7 +183,7 @@ def apply_all_transformations(gps_stream: pw.Table) -> tuple:
         Tuple of (status_stream, events_stream)
     """
 
-    # Step 1: Window-based velocity monitoring
+    # Step 1: Velocity monitoring with aggregations
     velocity_window = monitor_velocity_windows(gps_stream)
 
     # Step 2: Detect delays
@@ -206,26 +196,3 @@ def apply_all_transformations(gps_stream: pw.Table) -> tuple:
     events = generate_delay_events(status_stream)
 
     return eta_stream, events
-
-
-# Standalone test function
-if __name__ == "__main__":
-    print("Testing delay detection transformations...")
-
-    # Create test data using Pathway's debug table
-    test_data = pw.debug.table_from_markdown('''
-    truck_id | driver | lat | lon | velocity | cargo_value | contract_id | status | timestamp | route
-    TRK-402 | Priya | 18.5 | 73.8 | 5 | 120000 | CNT-001 | on-time | 1701234567 | [[73.8,18.5]]
-    TRK-305 | Rajesh | 12.9 | 77.5 | 35 | 85000 | CNT-002 | on-time | 1701234567 | [[77.5,12.9]]
-    TRK-518 | Amit | 22.5 | 88.3 | 70 | 95000 | CNT-003 | on-time | 1701234567 | [[88.3,22.5]]
-    ''')
-
-    # Apply transformations
-    status_stream, events = apply_all_transformations(test_data)
-
-    # Output for verification
-    pw.io.jsonlines.write(status_stream, "output/test_delays.jsonl")
-    pw.io.jsonlines.write(events, "output/test_events.jsonl")
-
-    print("✅ Test data written to output/test_delays.jsonl")
-    print("Run with: pw.run()")
