@@ -147,7 +147,7 @@ async def simulation_loop():
 async def main():
     """Start the WebSocket server"""
     print("=" * 60)
-    print("🚀 ChainReaction WebSocket Server")
+    print("🚀 FleetFusion WebSocket Server")
     print("=" * 60)
     print(f"📡 Starting server on ws://{WS_HOST}:{WS_PORT}")
 
