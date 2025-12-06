@@ -4,8 +4,9 @@ import {useState} from 'react';
 import {signIn} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 import {motion} from 'framer-motion';
+import {Mail, Lock, AlertCircle, Loader2} from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import {Zap, Mail, Lock, AlertCircle, Loader2} from 'lucide-react';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -52,16 +53,23 @@ export default function LoginPage() {
                 className="relative z-10 w-full max-w-md"
             >
                 {/* Logo */}
-                <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-                    <motion.div
-                        animate={{rotate: 360}}
-                        transition={{duration: 20, repeat: Infinity, ease: 'linear'}}
-                        className="p-3 rounded-lg bg-gradient-to-br from-teal-500/20 to-cyan-500/20 border border-teal-500/30"
-                    >
-                        <Zap className="w-8 h-8 text-teal-400"/>
-                    </motion.div>
-                    <span className="text-2xl font-bold text-white">ChainReaction</span>
-                </Link>
+                <motion.div
+                    initial={{opacity: 0, y: -20}}
+                    animate={{opacity: 1, y: 0}}
+                    className="text-center mb-8"
+                >
+                    <Link href="/" className="inline-flex items-center gap-2 mb-2">
+                        <div className="relative w-56 h-14">
+                            <Image 
+                                src="/Logo.png" 
+                                alt="FleetFusion Logo" 
+                                width={224} 
+                                height={56}
+                                className="object-contain"
+                            />
+                        </div>
+                    </Link>
+                </motion.div>
 
                 {/* Login Card */}
                 <div className="glass-card rounded-3xl p-8 border border-white/10">
@@ -138,7 +146,7 @@ export default function LoginPage() {
                     <div className="mt-6 p-4 rounded-lg bg-teal-500/5 border border-teal-500/20">
                         <p className="text-sm font-semibold text-teal-400 mb-2">Demo Credentials:</p>
                         <div className="space-y-1 text-xs text-slate-400">
-                            <p>Email: <span className="text-white mono-numbers">demo@chainreaction.com</span></p>
+                            <p>Email: <span className="text-white mono-numbers">demo@fleetfusion.com</span></p>
                             <p>Password: <span className="text-white mono-numbers">demo123</span></p>
                         </div>
                     </div>
@@ -152,7 +160,7 @@ export default function LoginPage() {
 
                 {/* Footer */}
                 <p className="text-center text-sm text-slate-500 mt-8">
-                    © 2025 ChainReaction. All rights reserved.
+                    &copy; 2025 FleetFusion. All rights reserved.
                 </p>
             </motion.div>
         </div>

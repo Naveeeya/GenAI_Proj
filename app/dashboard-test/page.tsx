@@ -45,7 +45,7 @@ export default function TestDashboard() {
                     <div className="space-y-2 text-sm font-mono text-slate-300">
                         <p>• Check terminal for NextAuth logs</p>
                         <p>• Try API test: <a href="/api/test" className="text-teal-400 underline">/api/test</a></p>
-                        <p>• Credentials: demo@chainreaction.com / demo123</p>
+                        <p>• Credentials: demo@fleetfusion.com / demo123</p>
                     </div>
                 </div>
 

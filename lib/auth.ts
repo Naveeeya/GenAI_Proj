@@ -6,14 +6,14 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 const users = [
     {
         id: '1',
-        email: 'admin@chainreaction.com',
+        email: 'admin@fleetfusion.com',
         password: 'admin123', // In production, use hashed passwords!
         name: 'Admin User',
         role: 'admin',
     },
     {
         id: '2',
-        email: 'demo@chainreaction.com',
+        email: 'demo@fleetfusion.com',
         password: 'demo123',
         name: 'Demo User',
         role: 'user',

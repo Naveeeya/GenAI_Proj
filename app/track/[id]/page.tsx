@@ -2,8 +2,26 @@
 
 import {useEffect, useState} from 'react';
 import {motion} from 'framer-motion';
-import {Package, MapPin, Clock, CheckCircle2, Truck, AlertCircle} from 'lucide-react';
+import {Package, MapPin, Clock, CheckCircle2, Truck as TruckIcon, AlertCircle, X, Phone, Mail, MessageSquare} from 'lucide-react';
 import {useParams} from 'next/navigation';
+import dynamic from 'next/dynamic';
+import {Truck} from '@/lib/types';
+
+// Dynamically import the map component (client-side only)
+const SupplyChainMap = dynamic(
+    () => import('@/components/SupplyChainMap'),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="w-full h-full flex items-center justify-center bg-slate-50">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"/>
+                    <p className="text-slate-600">Loading map...</p>
+                </div>
+            </div>
+        )
+    }
+);
 
 interface TrackingData {
     orderId: string;
@@ -11,6 +29,7 @@ interface TrackingData {
     status: 'pending' | 'in-transit' | 'delayed' | 'delivered';
     currentLocation: string;
     destination: string;
+    destinationCoords: [number, number];
     estimatedDelivery: string;
     timeline: {
         status: string;
@@ -22,6 +41,8 @@ interface TrackingData {
         driver: string;
         position: [number, number];
         velocity: number;
+        cargoValue: number;
+        route: [number, number][];
     };
 }
 
@@ -31,16 +52,31 @@ export default function TrackOrderPage() {
 
     const [tracking, setTracking] = useState<TrackingData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [showContactModal, setShowContactModal] = useState(false);
 
     useEffect(() => {
         // Simulate fetching tracking data
         setTimeout(() => {
+            // Define route from Pune to Mumbai
+            const puneCoords: [number, number] = [73.8567, 18.5204];
+            const mumbaiCoords: [number, number] = [72.8777, 19.0760];
+            
+            // Create a route with intermediate points
+            const route: [number, number][] = [
+                puneCoords,
+                [73.5, 18.7],
+                [73.2, 18.9],
+                [73.0, 19.0],
+                mumbaiCoords
+            ];
+            
             setTracking({
                 orderId: orderId || 'ORD-402',
                 truckId: 'TRK-402',
                 status: 'in-transit',
                 currentLocation: 'Pune, Maharashtra',
                 destination: 'Mumbai, Maharashtra',
+                destinationCoords: mumbaiCoords,
                 estimatedDelivery: new Date(Date.now() + 3 * 60 * 60 * 1000).toLocaleString(),
                 timeline: [
                     {
@@ -60,8 +96,10 @@ export default function TrackOrderPage() {
                 truck: {
                     id: 'TRK-402',
                     driver: 'Priya Sharma',
-                    position: [73.8567, 18.5204],
+                    position: puneCoords,
                     velocity: 68,
+                    cargoValue: 125000,
+                    route: route,
                 }
             });
             setLoading(false);
@@ -183,7 +221,7 @@ export default function TrackOrderPage() {
                                 </div>
 
                                 <div className="flex items-start gap-3">
-                                    <Truck className="w-5 h-5 text-teal-500 mt-0.5"/>
+                                    <TruckIcon className="w-5 h-5 text-teal-500 mt-0.5"/>
                                     <div>
                                         <p className="text-sm text-slate-500">Driver</p>
                                         <p className="font-semibold text-slate-800">{tracking.truck.driver}</p>
@@ -241,52 +279,140 @@ export default function TrackOrderPage() {
                             <h3 className="font-bold text-slate-800 mb-2">Need Help?</h3>
                             <p className="text-sm text-slate-600 mb-4">Our support team is available 24/7</p>
                             <button
-                                className="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                                className="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 rounded-lg transition-colors"
+                                onClick={() => setShowContactModal(true)}
+                            >
                                 Contact Support
                             </button>
                         </motion.div>
                     </div>
 
-                    {/* Right Column - Map Placeholder */}
+                    {/* Right Column - Map */}
                     <motion.div
                         initial={{opacity: 0, x: 20}}
                         animate={{opacity: 1, x: 0}}
                         transition={{delay: 0.3}}
                         className="lg:col-span-2"
                     >
-                        <div
-                            className="bg-white rounded-2xl shadow-sm border border-slate-200 h-[600px] flex items-center justify-center">
-                            <div className="text-center max-w-md p-8">
-                                <div className="text-6xl mb-4">🗺️</div>
-                                <h3 className="text-2xl font-bold text-slate-800 mb-2">Map Integration Placeholder</h3>
-                                <p className="text-slate-600 mb-4">Live tracking map will be integrated here by your
-                                    friend</p>
-                                <div className="bg-slate-50 p-4 rounded-lg text-left border border-slate-200">
-                                    <p className="text-sm text-slate-600 mb-2 font-semibold">Truck Info:</p>
-                                    <ul className="text-sm text-slate-700 space-y-1">
-                                        <li>• ID: {tracking.truckId}</li>
-                                        <li>• Driver: {tracking.truck.driver}</li>
-                                        <li>• Speed: {tracking.truck.velocity} km/h</li>
-                                        <li>• Location: {tracking.currentLocation}</li>
-                                    </ul>
+                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 h-[600px] overflow-hidden">
+                            <SupplyChainMap 
+                                trucks={[{
+                                    id: tracking.truckId,
+                                    driver: tracking.truck.driver,
+                                    position: tracking.truck.position,
+                                    velocity: tracking.truck.velocity,
+                                    cargoValue: tracking.truck.cargoValue,
+                                    route: tracking.truck.route,
+                                    destination: tracking.destinationCoords,
+                                    status: tracking.status === 'delayed' ? 'delayed' : 
+                                           tracking.status === 'delivered' ? 'resolved' : 'on-time'
+                                }]}
+                                ecoMode={false}
+                            />
+                        </div>
+                    </motion.div>
+
+                </div>
+            </div>
+
+            {/* Contact Support Modal */}
+            {showContactModal && (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                    {/* Backdrop */}
+                    <motion.div
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
+                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                        onClick={() => setShowContactModal(false)}
+                    />
+
+                    {/* Modal */}
+                    <motion.div
+                        initial={{opacity: 0, scale: 0.95}}
+                        animate={{opacity: 1, scale: 1}}
+                        exit={{opacity: 0, scale: 0.95}}
+                        className="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md z-10"
+                    >
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-lg bg-teal-500/10 border border-teal-500/20">
+                                    <MessageSquare className="w-5 h-5 text-teal-500"/>
+                                </div>
+                                <h2 className="text-xl font-bold text-slate-800">Contact Support</h2>
+                            </div>
+                            <button
+                                onClick={() => setShowContactModal(false)}
+                                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                            >
+                                <X className="w-5 h-5 text-slate-500"/>
+                            </button>
+                        </div>
+
+                        <p className="text-slate-600 mb-6">Our support team is available 24/7 to assist you with your order.</p>
+
+                        <div className="space-y-4">
+                            <div className="bg-slate-50 rounded-xl p-4 hover:bg-slate-100 transition-colors">
+                                <div className="flex items-start gap-3">
+                                    <div className="p-2 rounded-lg bg-teal-500/10">
+                                        <Phone className="w-5 h-5 text-teal-500"/>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500 mb-1">Phone</p>
+                                        <a href="tel:+11234567890" className="font-semibold text-slate-800 hover:text-teal-600 transition-colors">
+                                            +1 (123) 456-7890
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-slate-50 rounded-xl p-4 hover:bg-slate-100 transition-colors">
+                                <div className="flex items-start gap-3">
+                                    <div className="p-2 rounded-lg bg-teal-500/10">
+                                        <Mail className="w-5 h-5 text-teal-500"/>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-500 mb-1">Email</p>
+                                        <a href="mailto:support@fleetfusion.com" className="font-semibold text-slate-800 hover:text-teal-600 transition-colors">
+                                            support@fleetfusion.com
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-4 border border-teal-200">
+                                <div className="flex items-start gap-3">
+                                    <div className="p-2 rounded-lg bg-teal-500">
+                                        <MessageSquare className="w-5 h-5 text-white"/>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-sm text-slate-600 mb-1">Live Chat</p>
+                                        <p className="font-semibold text-slate-800 mb-2">Available 24/7</p>
+                                        <button className="w-full bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                            Start Chat
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div className="mt-6 pt-4 border-t border-slate-200">
+                            <p className="text-xs text-slate-500 text-center">
+                                Average response time: Less than 2 minutes
+                            </p>
+                        </div>
                     </motion.div>
                 </div>
-            </div>
+            )}
 
             {/* Footer */}
             <footer className="bg-white border-t border-slate-200 mt-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-sm text-slate-500">© 2025 ChainReaction. Real-time tracking powered by
-                            AI.</p>
+                        <p className="text-sm text-slate-500">© 2025 FleetFusion. Real-time tracking powered by AI.</p>
                         <div className="flex gap-4">
-                            <a href="#" className="text-sm text-slate-500 hover:text-teal-600 transition-colors">Privacy
-                                Policy</a>
-                            <a href="#" className="text-sm text-slate-500 hover:text-teal-600 transition-colors">Terms
-                                of Service</a>
+                            <a href="#" className="text-sm text-slate-500 hover:text-teal-600 transition-colors">Privacy Policy</a>
+                            <a href="#" className="text-sm text-slate-500 hover:text-teal-600 transition-colors">Terms of Service</a>
                         </div>
                     </div>
                 </div>

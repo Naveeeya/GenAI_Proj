@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     const users = [
         {
-            email: 'demo@chainreaction.com',
+            email: 'demo@fleetfusion.com',
             password: 'demo123',
             name: 'Demo User',
         }
